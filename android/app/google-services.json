@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "190917452882",
+    "project_id": "premium-car-hub",
+    "storage_bucket": "premium-car-hub.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:190917452882:android:942b6b4d6b5694bb9bab8b",
+        "android_client_info": {
+          "package_name": "com.example.car_marketplace_and_rent_management_system"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUyqb1TxWSYHHbyU9XlyZMB8MmJ0AF_N0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
