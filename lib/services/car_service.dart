@@ -47,4 +47,19 @@ class CarService {
         .limit(limit)
         .snapshots();
   }
+
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllMyCars() {
+    final user = FirebaseAuth.instance.currentUser;
+
+    return _firestore
+        .collection('registered_cars')
+        .where('ownerId', isEqualTo: user!.uid)
+        .snapshots();
+  }
+
+
+  Future<void> deleteRegisteredCar(String carId) async {
+    await _firestore.collection('registered_cars').doc(carId).delete();
+  }
 }

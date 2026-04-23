@@ -6,12 +6,14 @@ import '../../services/user_service.dart';
 import '../../widgets/app_drawer.dart';
 import '../cars/register_car_screen.dart';
 
+import '../cars/my_registered_cars_screen.dart';
+
 class UserDashboardScreen extends StatelessWidget {
   const UserDashboardScreen({super.key});
 
   void _showComingSoon(BuildContext context, String title) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('$title page will be added next')),
+      SnackBar(content: Text('$title page ekhono baanai nai')),
     );
   }
 
@@ -106,8 +108,11 @@ class UserDashboardScreen extends StatelessWidget {
                   const Spacer(),
                   TextButton(
                     onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('View All comes next')),
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const MyRegisteredCarsScreen(),
+                        ),
                       );
                     },
                     child: const Text(

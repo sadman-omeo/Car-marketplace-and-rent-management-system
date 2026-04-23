@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../screens/cars/register_car_screen.dart';
 import '../services/auth_service.dart';
+import '../screens/cars/my_registered_cars_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -43,15 +44,14 @@ class AppDrawer extends StatelessWidget {
               },
             ),
             ListTile(
-              leading:
-              const Icon(Icons.app_registration, color: Color(0xFFD4AF37)),
-              title: const Text('Register Car'),
+              leading: const Icon(Icons.directions_car, color: Color(0xFFD4AF37)),
+              title: const Text('My Registered Cars'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => const RegisterCarScreen(),
+                    builder: (_) => const MyRegisteredCarsScreen(),
                   ),
                 );
               },
