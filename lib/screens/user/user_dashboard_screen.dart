@@ -1,19 +1,45 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../services/car_service.dart';
 import '../../services/user_service.dart';
 import '../../widgets/app_drawer.dart';
-import '../cars/register_car_screen.dart';
-
 import '../cars/my_registered_cars_screen.dart';
+import '../cars/register_car_screen.dart';
 
 class UserDashboardScreen extends StatelessWidget {
   const UserDashboardScreen({super.key});
 
   void _showComingSoon(BuildContext context, String title) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('$title page ekhono baanai nai')),
+      SnackBar(content: Text('$title page will be added next')),
+    );
+  }
+
+  Widget _buildCarImage(Map<String, dynamic> car) {
+    try {
+      final String base64String = car['imageBase64'] ?? '';
+
+      if (base64String.isNotEmpty) {
+        Uint8List imageBytes = base64Decode(base64String);
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Image.memory(
+            imageBytes,
+            fit: BoxFit.cover,
+            width: 60,
+            height: 60,
+          ),
+        );
+      }
+    } catch (_) {}
+
+    return const Icon(
+      Icons.directions_car,
+      color: Colors.black,
     );
   }
 
@@ -76,7 +102,7 @@ class UserDashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildRegisteredCarsPreview() {
+  Widget _buildRegisteredCarsPreview(BuildContext context) {
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
       stream: CarService().getMyCars(limit: 3),
       builder: (context, snapshot) {
@@ -146,25 +172,7 @@ class UserDashboardScreen extends StatelessWidget {
                               color: const Color(0xFFD4AF37),
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: car['imageUrl'] != null &&
-                                car['imageUrl'].toString().isNotEmpty
-                                ? ClipRRect(
-                              borderRadius: BorderRadius.circular(12),
-                              child: Image.network(
-                                car['imageUrl'],
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return const Icon(
-                                    Icons.directions_car,
-                                    color: Colors.black,
-                                  );
-                                },
-                              ),
-                            )
-                                : const Icon(
-                              Icons.directions_car,
-                              color: Colors.black,
-                            ),
+                            child: _buildCarImage(car),
                           ),
                           const SizedBox(width: 12),
                           Expanded(
@@ -226,6 +234,7 @@ class UserDashboardScreen extends StatelessWidget {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -239,7 +248,7 @@ class UserDashboardScreen extends StatelessWidget {
           children: [
             _buildProfileCard(),
             const SizedBox(height: 16),
-            _buildRegisteredCarsPreview(),
+            _buildRegisteredCarsPreview(context),
             const SizedBox(height: 16),
             ElevatedButton.icon(
               onPressed: () {

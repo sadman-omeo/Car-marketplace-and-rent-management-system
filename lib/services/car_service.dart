@@ -1,10 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../core/constants/app_constants.dart';
-
-
-
 class CarService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -18,7 +14,7 @@ class CarService {
     required String mileage,
     required String fuelType,
     required String transmission,
-    required String imageUrl,
+    required String imageBase64,
   }) async {
     final user = FirebaseAuth.instance.currentUser;
 
@@ -33,10 +29,17 @@ class CarService {
       'mileage': mileage,
       'fuelType': fuelType,
       'transmission': transmission,
-      'imageUrl': imageUrl.trim().isEmpty ? defaultCarImage : imageUrl.trim(),
+      'imageBase64': imageBase64,
+      'isForSale': false,
+      'isForRent': false,
+      'salePrice': '',
+      'rentPricePerDay': '',
       'createdAt': Timestamp.now(),
+      'updatedAt': Timestamp.now(),
     });
   }
+
+
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getMyCars({int limit = 3}) {
     final user = FirebaseAuth.instance.currentUser;
@@ -48,7 +51,6 @@ class CarService {
         .snapshots();
   }
 
-
   Stream<QuerySnapshot<Map<String, dynamic>>> getAllMyCars() {
     final user = FirebaseAuth.instance.currentUser;
 
@@ -59,7 +61,37 @@ class CarService {
   }
 
 
+  //delete car
   Future<void> deleteRegisteredCar(String carId) async {
     await _firestore.collection('registered_cars').doc(carId).delete();
+  }
+
+
+
+  // Sell Car
+  Future<void> updateSellStatus({
+    required String carId,
+    required bool isForSale,
+    required String salePrice,
+  }) async {
+    await _firestore.collection('registered_cars').doc(carId).update({
+      'isForSale': isForSale,
+      'salePrice': isForSale ? salePrice : '',
+      'updatedAt': Timestamp.now(),
+    });
+  }
+
+
+  // give for Rent Car
+  Future<void> updateRentStatus({
+    required String carId,
+    required bool isForRent,
+    required String rentPricePerDay,
+  }) async {
+    await _firestore.collection('registered_cars').doc(carId).update({
+      'isForRent': isForRent,
+      'rentPricePerDay': isForRent ? rentPricePerDay : '',
+      'updatedAt': Timestamp.now(),
+    });
   }
 }

@@ -1,4 +1,10 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:image/image.dart' as img;
+import 'package:image_picker/image_picker.dart';
 
 import '../../core/constants/app_constants.dart';
 import '../../services/car_service.dart';
@@ -17,14 +23,16 @@ class _RegisterCarScreenState extends State<RegisterCarScreen> {
   final TextEditingController _registrationController = TextEditingController();
   final TextEditingController _colorController = TextEditingController();
   final TextEditingController _mileageController = TextEditingController();
-  final TextEditingController _imageUrlController = TextEditingController();
 
   final CarService _carService = CarService();
+  final ImagePicker _picker = ImagePicker();
 
   String? selectedType;
   String? selectedFuelType;
   String? selectedTransmission;
 
+  File? _selectedImageFile;
+  String _imageBase64 = '';
   bool _isLoading = false;
 
   @override
@@ -35,7 +43,6 @@ class _RegisterCarScreenState extends State<RegisterCarScreen> {
     _registrationController.dispose();
     _colorController.dispose();
     _mileageController.dispose();
-    _imageUrlController.dispose();
     super.dispose();
   }
 
@@ -43,6 +50,39 @@ class _RegisterCarScreenState extends State<RegisterCarScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message)),
     );
+  }
+
+  Future<void> _pickImage() async {
+    try {
+      final XFile? pickedImage = await _picker.pickImage(
+        source: ImageSource.gallery,
+      );
+
+      if (pickedImage == null) return;
+
+      final file = File(pickedImage.path);
+      final bytes = await file.readAsBytes();
+
+      final decodedImage = img.decodeImage(bytes);
+      if (decodedImage == null) {
+        _showMessage('Could not process image');
+        return;
+      }
+
+      final resized = img.copyResize(decodedImage, width: 600);
+      final compressedBytes = Uint8List.fromList(
+        img.encodeJpg(resized, quality: 55),
+      );
+
+      final base64String = base64Encode(compressedBytes);
+
+      setState(() {
+        _selectedImageFile = file;
+        _imageBase64 = base64String;
+      });
+    } catch (e) {
+      _showMessage('Failed to pick image');
+    }
   }
 
   Future<void> _saveCar() async {
@@ -56,6 +96,11 @@ class _RegisterCarScreenState extends State<RegisterCarScreen> {
         selectedFuelType == null ||
         selectedTransmission == null) {
       _showMessage('Please fill in all required fields');
+      return;
+    }
+
+    if (_imageBase64.isEmpty) {
+      _showMessage('Please select a car image');
       return;
     }
 
@@ -74,12 +119,14 @@ class _RegisterCarScreenState extends State<RegisterCarScreen> {
         mileage: _mileageController.text.trim(),
         fuelType: selectedFuelType!,
         transmission: selectedTransmission!,
-        imageUrl: _imageUrlController.text.trim(),
+        imageBase64: _imageBase64,
       );
 
       if (!mounted) return;
       Navigator.pop(context);
-      _showMessage('Car registered successfully');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Car registered successfully')),
+      );
     } catch (e) {
       _showMessage('Failed to register car');
     }
@@ -102,7 +149,7 @@ class _RegisterCarScreenState extends State<RegisterCarScreen> {
       dropdownColor: const Color(0xFF171717),
       decoration: InputDecoration(labelText: label),
       items: items.map((item) {
-        return DropdownMenuItem(
+        return DropdownMenuItem<String>(
           value: item,
           child: Text(item),
         );
@@ -128,6 +175,40 @@ class _RegisterCarScreenState extends State<RegisterCarScreen> {
           ),
           child: Column(
             children: [
+              GestureDetector(
+                onTap: _pickImage,
+                child: Container(
+                  width: double.infinity,
+                  height: 180,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: const Color(0xFFD4AF37)),
+                  ),
+                  child: _selectedImageFile != null
+                      ? ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: Image.file(
+                      _selectedImageFile!,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                    ),
+                  )
+                      : const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.add_a_photo,
+                        color: Color(0xFFD4AF37),
+                        size: 40,
+                      ),
+                      SizedBox(height: 10),
+                      Text('Tap to select car image'),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 18),
               TextField(
                 controller: _brandController,
                 decoration: const InputDecoration(labelText: 'Brand'),
@@ -192,13 +273,6 @@ class _RegisterCarScreenState extends State<RegisterCarScreen> {
                     selectedTransmission = value;
                   });
                 },
-              ),
-              const SizedBox(height: 14),
-              TextField(
-                controller: _imageUrlController,
-                decoration: const InputDecoration(
-                  labelText: 'Image URL (optional for now)',
-                ),
               ),
               const SizedBox(height: 24),
               _isLoading
