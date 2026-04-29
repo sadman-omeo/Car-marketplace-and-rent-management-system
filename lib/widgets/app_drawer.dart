@@ -7,6 +7,8 @@ import '../screens/cars/my_registered_cars_screen.dart';
 
 import '../screens/cars/buy_cars_screen.dart';
 
+import '../screens/cars/rent_cars_screen.dart';
+
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
 
@@ -91,8 +93,17 @@ class AppDrawer extends StatelessWidget {
             ListTile(
               leading: const Icon(Icons.car_rental, color: Color(0xFFD4AF37)),
               title: const Text('Rent Cars'),
-              onTap: () => _showComingSoon(context, 'Rent Cars'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const RentCarsScreen(),
+                  ),
+                );
+              },
             ),
+
             const Divider(),
             ListTile(
               leading: const Icon(Icons.logout, color: Color(0xFFD4AF37)),

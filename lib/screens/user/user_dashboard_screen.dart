@@ -13,6 +13,8 @@ import '../cars/register_car_screen.dart';
 import '../cars/buy_cars_screen.dart';
 import '../cars/my_registered_cars_screen.dart';
 
+import '../cars/rent_cars_screen.dart';
+
 class UserDashboardScreen extends StatelessWidget {
   const UserDashboardScreen({super.key});
 
@@ -301,6 +303,14 @@ class UserDashboardScreen extends StatelessWidget {
                   context,
                   title: 'Rent Cars',
                   icon: Icons.car_rental,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const RentCarsScreen(),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
