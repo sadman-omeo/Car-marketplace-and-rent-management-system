@@ -4,6 +4,9 @@ import '../screens/cars/register_car_screen.dart';
 import '../services/auth_service.dart';
 import '../screens/cars/my_registered_cars_screen.dart';
 
+
+import '../screens/cars/buy_cars_screen.dart';
+
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
 
@@ -56,16 +59,35 @@ class AppDrawer extends StatelessWidget {
                 );
               },
             ),
+
             ListTile(
               leading: const Icon(Icons.shopping_bag, color: Color(0xFFD4AF37)),
               title: const Text('Buy Cars'),
-              onTap: () => _showComingSoon(context, 'Buy Cars'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const BuyCarsScreen(),
+                  ),
+                );
+              },
             ),
+
             ListTile(
               leading: const Icon(Icons.sell, color: Color(0xFFD4AF37)),
               title: const Text('Sell Your Car'),
-              onTap: () => _showComingSoon(context, 'Sell Your Car'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const MyRegisteredCarsScreen(),
+                  ),
+                );
+              },
             ),
+
             ListTile(
               leading: const Icon(Icons.car_rental, color: Color(0xFFD4AF37)),
               title: const Text('Rent Cars'),

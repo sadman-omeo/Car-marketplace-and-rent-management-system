@@ -10,6 +10,9 @@ import '../../widgets/app_drawer.dart';
 import '../cars/my_registered_cars_screen.dart';
 import '../cars/register_car_screen.dart';
 
+import '../cars/buy_cars_screen.dart';
+import '../cars/my_registered_cars_screen.dart';
+
 class UserDashboardScreen extends StatelessWidget {
   const UserDashboardScreen({super.key});
 
@@ -206,10 +209,11 @@ class UserDashboardScreen extends StatelessWidget {
       BuildContext context, {
         required String title,
         required IconData icon,
+        VoidCallback? onTap,
       }) {
     return Expanded(
       child: InkWell(
-        onTap: () => _showComingSoon(context, title),
+        onTap: onTap ?? () => _showComingSoon(context, title),
         child: Container(
           height: 95,
           decoration: BoxDecoration(
@@ -269,12 +273,28 @@ class UserDashboardScreen extends StatelessWidget {
                   context,
                   title: 'Buy Cars',
                   icon: Icons.shopping_bag,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const BuyCarsScreen(),
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(width: 12),
                 _actionButton(
                   context,
                   title: 'Sell Your Car',
                   icon: Icons.sell,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const MyRegisteredCarsScreen(),
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(width: 12),
                 _actionButton(

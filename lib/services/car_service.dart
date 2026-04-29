@@ -61,6 +61,21 @@ class CarService {
   }
 
 
+  Stream<QuerySnapshot<Map<String, dynamic>>> getCarsForSale() {
+    return _firestore
+        .collection('registered_cars')
+        .where('isForSale', isEqualTo: true)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getCarsForRent() {
+    return _firestore
+        .collection('registered_cars')
+        .where('isForRent', isEqualTo: true)
+        .snapshots();
+  }
+
+
   //delete car
   Future<void> deleteRegisteredCar(String carId) async {
     await _firestore.collection('registered_cars').doc(carId).delete();
@@ -69,6 +84,7 @@ class CarService {
 
 
   // Sell Car
+
   Future<void> updateSellStatus({
     required String carId,
     required bool isForSale,
