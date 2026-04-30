@@ -91,4 +91,11 @@ class BookingService {
         .where('renterId', isEqualTo: user?.uid ?? '')
         .snapshots();
   }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getBookingsForCar(String carId) {
+    return _firestore
+        .collection('bookings')
+        .where('carId', isEqualTo: carId)
+        .snapshots();
+  }
 }
