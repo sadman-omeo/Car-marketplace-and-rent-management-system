@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 
 import '../../services/car_service.dart';
 
+import 'car_details_screen.dart';
+
 class BuyCarsScreen extends StatefulWidget {
   const BuyCarsScreen({super.key});
 
@@ -107,55 +109,65 @@ class _BuyCarsScreenState extends State<BuyCarsScreen> {
                       final car = filteredDocs[index].data();
                       final salePrice = car['salePrice'] ?? '';
 
-                      return Container(
-                        margin: const EdgeInsets.only(bottom: 14),
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF171717),
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: const Color(0xFFD4AF37)),
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: 90,
-                              height: 90,
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFD4AF37),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: _buildCarImage(car),
+                      return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => CarDetailsScreen(car: car),
                             ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    '${car['brand']} ${car['model']}',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 17,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 6),
-                                  Text('Year: ${car['year']}'),
-                                  Text('Type: ${car['type']}'),
-                                  Text('Fuel: ${car['fuelType']}'),
-                                  Text('Transmission: ${car['transmission']}'),
-                                  const SizedBox(height: 6),
-                                  Text(
-                                    'Price: $salePrice',
-                                    style: const TextStyle(
-                                      color: Color(0xFFD4AF37),
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
+                          );
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 14),
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF171717),
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: const Color(0xFFD4AF37)),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: 90,
+                                height: 90,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFD4AF37),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: _buildCarImage(car),
                               ),
-                            ),
-                          ],
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${car['brand']} ${car['model']}',
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 17,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 6),
+                                    Text('Year: ${car['year']}'),
+                                    Text('Type: ${car['type']}'),
+                                    Text('Fuel: ${car['fuelType']}'),
+                                    Text('Transmission: ${car['transmission']}'),
+                                    const SizedBox(height: 6),
+                                    Text(
+                                      'Price: $salePrice',
+                                      style: const TextStyle(
+                                        color: Color(0xFFD4AF37),
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },

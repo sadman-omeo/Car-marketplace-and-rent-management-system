@@ -1,0 +1,167 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
+import 'package:flutter/material.dart';
+
+class CarDetailsScreen extends StatelessWidget {
+  final Map<String, dynamic> car;
+
+  const CarDetailsScreen({
+    super.key,
+    required this.car,
+  });
+
+  Widget _buildCarImage() {
+    try {
+      final String base64String = car['imageBase64'] ?? '';
+
+      if (base64String.isNotEmpty) {
+        Uint8List imageBytes = base64Decode(base64String);
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(18),
+          child: Image.memory(
+            imageBytes,
+            width: double.infinity,
+            height: 220,
+            fit: BoxFit.cover,
+          ),
+        );
+      }
+    } catch (_) {}
+
+    return Container(
+      width: double.infinity,
+      height: 220,
+      decoration: BoxDecoration(
+        color: const Color(0xFFD4AF37),
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: const Icon(
+        Icons.directions_car,
+        size: 70,
+        color: Colors.black,
+      ),
+    );
+  }
+
+  Widget _infoRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 130,
+            child: Text(
+              '$label:',
+              style: const TextStyle(
+                color: Color(0xFFD4AF37),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Text(value),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bool isForSale = car['isForSale'] ?? false;
+    final bool isForRent = car['isForRent'] ?? false;
+
+    final String salePrice = (car['salePrice'] ?? '').toString();
+    final String rentPricePerDay = (car['rentPricePerDay'] ?? '').toString();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Car Details'),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: const Color(0xFF171717),
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: const Color(0xFFD4AF37)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildCarImage(),
+              const SizedBox(height: 16),
+              Text(
+                '${car['brand']} ${car['model']}',
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 14),
+              _infoRow('Year', '${car['year']}'),
+              _infoRow('Type', '${car['type']}'),
+              _infoRow('Registration No', '${car['registrationNumber']}'),
+              _infoRow('Color', '${car['color']}'),
+              _infoRow('Mileage', '${car['mileage']}'),
+              _infoRow('Fuel Type', '${car['fuelType']}'),
+              _infoRow('Transmission', '${car['transmission']}'),
+              if (isForSale)
+                _infoRow('Sale Price', salePrice),
+              if (isForRent)
+                _infoRow('Rent Per Day', rentPricePerDay),
+              const SizedBox(height: 18),
+              if (isForSale || isForRent)
+                Row(
+                  children: [
+                    if (isForSale)
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFD4AF37),
+                            borderRadius: BorderRadius.circular(14),
+                          ),
+                          child: const Text(
+                            'Available for Sale',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    if (isForSale && isForRent)
+                      const SizedBox(width: 12),
+                    if (isForRent)
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(color: const Color(0xFFD4AF37)),
+                          ),
+                          child: const Text(
+                            'Available for Rent',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: Color(0xFFD4AF37),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
