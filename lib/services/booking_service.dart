@@ -99,9 +99,26 @@ class BookingService {
         .snapshots();
   }
 
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllBookings() {
+    return _firestore.collection('bookings').snapshots();
+  }
+
   Future<void> cancelBooking(String bookingId) async {
     await _firestore.collection('bookings').doc(bookingId).update({
       'status': 'cancelled',
     });
+  }
+
+  Future<void> updateBookingStatus({
+    required String bookingId,
+    required String status,
+  }) async {
+    await _firestore.collection('bookings').doc(bookingId).update({
+      'status': status,
+    });
+  }
+
+  Future<void> deleteBooking(String bookingId) async {
+    await _firestore.collection('bookings').doc(bookingId).delete();
   }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'admin_reports_screen.dart';
 
+import 'admin_bookings_screen.dart';
+
 class AdminDashboardScreen extends StatelessWidget {
   const AdminDashboardScreen({super.key});
 
@@ -104,8 +106,16 @@ class AdminDashboardScreen extends StatelessWidget {
                   ),
                   _adminCard(
                     context: context,
-                    title: 'Manage Listings',
-                    icon: Icons.directions_car,
+                    title: 'Manage Bookings',
+                    icon: Icons.book_online,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const AdminBookingsScreen(),
+                        ),
+                      );
+                    },
                   ),
                   _adminCard(
                     context: context,
