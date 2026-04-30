@@ -52,6 +52,55 @@ class MyBookingsScreen extends StatelessWidget {
     }
   }
 
+  Future<void> _cancelBooking(BuildContext context, String bookingId) async {
+    try {
+      await BookingService().cancelBooking(bookingId);
+
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Booking cancelled successfully')),
+      );
+    } catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to cancel booking')),
+      );
+    }
+  }
+
+  Future<void> _showCancelDialog(BuildContext context, String bookingId) async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFF171717),
+          title: const Text('Cancel Booking'),
+          content: const Text('Are you sure you want to cancel this booking? You may be charged additional in your future payments.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text(
+                'No',
+                style: TextStyle(color: Color(0xFFD4AF37)),
+              ),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text(
+                'Yes, Cancel',
+                style: TextStyle(color: Colors.redAccent),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirm == true) {
+      await _cancelBooking(context, bookingId);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,7 +137,8 @@ class MyBookingsScreen extends StatelessWidget {
             return ListView.builder(
               itemCount: docs.length,
               itemBuilder: (context, index) {
-                final booking = docs[index].data();
+                final doc = docs[index];
+                final booking = doc.data();
                 final status = (booking['status'] ?? 'confirmed').toString();
 
                 return Container(
@@ -168,6 +218,25 @@ class MyBookingsScreen extends StatelessWidget {
                           ),
                         ],
                       ),
+                      if (status.toLowerCase() == 'confirmed') ...[
+                        const SizedBox(height: 14),
+                        OutlinedButton(
+                          onPressed: () {
+                            _showCancelDialog(context, doc.id);
+                          },
+                          style: OutlinedButton.styleFrom(
+                            minimumSize: const Size(double.infinity, 52),
+                            side: const BorderSide(color: Colors.redAccent),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                          ),
+                          child: const Text(
+                            'Cancel Booking',
+                            style: TextStyle(color: Colors.redAccent),
+                          ),
+                        ),
+                      ],
                     ],
                   ),
                 );

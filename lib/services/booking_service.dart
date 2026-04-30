@@ -98,4 +98,10 @@ class BookingService {
         .where('carId', isEqualTo: carId)
         .snapshots();
   }
+
+  Future<void> cancelBooking(String bookingId) async {
+    await _firestore.collection('bookings').doc(bookingId).update({
+      'status': 'cancelled',
+    });
+  }
 }
