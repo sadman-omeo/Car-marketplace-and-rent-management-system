@@ -27,4 +27,24 @@ class ReportService {
       'createdAt': Timestamp.now(),
     });
   }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllReports() {
+    return _firestore
+        .collection('reports')
+        .orderBy('createdAt', descending: true)
+        .snapshots();
+  }
+
+  Future<void> updateReportStatus({
+    required String reportId,
+    required String status,
+  }) async {
+    await _firestore.collection('reports').doc(reportId).update({
+      'status': status,
+    });
+  }
+
+  Future<void> deleteReport(String reportId) async {
+    await _firestore.collection('reports').doc(reportId).delete();
+  }
 }

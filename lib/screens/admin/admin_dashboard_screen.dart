@@ -1,37 +1,47 @@
-
-
 import 'package:flutter/material.dart';
 
+import 'admin_reports_screen.dart';
 
 class AdminDashboardScreen extends StatelessWidget {
   const AdminDashboardScreen({super.key});
 
-
-  Widget _adminCard(String title, IconData icon) {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFF171717),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFD4AF37)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(18),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, color: const Color(0xFFD4AF37), size: 34),
-            const SizedBox(height: 12),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ],
+  Widget _adminCard({
+    required BuildContext context,
+    required String title,
+    required IconData icon,
+    VoidCallback? onTap,
+  }) {
+    return InkWell(
+      onTap: onTap ??
+              () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('$title page will be added next')),
+            );
+          },
+      child: Container(
+        decoration: BoxDecoration(
+          color: const Color(0xFF171717),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: const Color(0xFFD4AF37)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(18),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: const Color(0xFFD4AF37), size: 34),
+              const SizedBox(height: 12),
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -87,10 +97,34 @@ class AdminDashboardScreen extends StatelessWidget {
                 crossAxisSpacing: 14,
                 mainAxisSpacing: 14,
                 children: [
-                  _adminCard('Manage Users', Icons.people),
-                  _adminCard('Manage Listings', Icons.directions_car),
-                  _adminCard('Manage Bookings', Icons.book_online),
-                  _adminCard('Reported Listings', Icons.report),
+                  _adminCard(
+                    context: context,
+                    title: 'Manage Users',
+                    icon: Icons.people,
+                  ),
+                  _adminCard(
+                    context: context,
+                    title: 'Manage Listings',
+                    icon: Icons.directions_car,
+                  ),
+                  _adminCard(
+                    context: context,
+                    title: 'Manage Bookings',
+                    icon: Icons.book_online,
+                  ),
+                  _adminCard(
+                    context: context,
+                    title: 'Reported Listings',
+                    icon: Icons.report,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const AdminReportsScreen(),
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
