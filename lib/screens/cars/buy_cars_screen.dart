@@ -114,7 +114,10 @@ class _BuyCarsScreenState extends State<BuyCarsScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => CarDetailsScreen(car: car),
+                              builder: (_) => CarDetailsScreen(
+                                carId: filteredDocs[index].id,
+                                car: car,
+                              ),
                             ),
                           );
                         },

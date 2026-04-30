@@ -113,7 +113,10 @@ class _RentCarsScreenState extends State<RentCarsScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => CarDetailsScreen(car: car),
+                              builder: (_) => CarDetailsScreen(
+                                carId: filteredDocs[index].id,
+                                car: car,
+                              ),
                             ),
                           );
                         },

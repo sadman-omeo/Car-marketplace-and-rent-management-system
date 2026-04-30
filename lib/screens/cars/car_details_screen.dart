@@ -3,11 +3,15 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
+import 'report_listing_screen.dart';
+
 class CarDetailsScreen extends StatelessWidget {
+  final String carId;
   final Map<String, dynamic> car;
 
   const CarDetailsScreen({
     super.key,
+    required this.carId,
     required this.car,
   });
 
@@ -109,10 +113,8 @@ class CarDetailsScreen extends StatelessWidget {
               _infoRow('Mileage', '${car['mileage']}'),
               _infoRow('Fuel Type', '${car['fuelType']}'),
               _infoRow('Transmission', '${car['transmission']}'),
-              if (isForSale)
-                _infoRow('Sale Price', salePrice),
-              if (isForRent)
-                _infoRow('Rent Per Day', rentPricePerDay),
+              if (isForSale) _infoRow('Sale Price', salePrice),
+              if (isForRent) _infoRow('Rent Per Day', rentPricePerDay),
               const SizedBox(height: 18),
               if (isForSale || isForRent)
                 Row(
@@ -158,6 +160,32 @@ class CarDetailsScreen extends StatelessWidget {
                       ),
                   ],
                 ),
+              const SizedBox(height: 20),
+              OutlinedButton.icon(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => ReportListingScreen(
+                        carId: carId,
+                        car: car,
+                      ),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.report, color: Colors.redAccent),
+                label: const Text(
+                  'Report Listing',
+                  style: TextStyle(color: Colors.redAccent),
+                ),
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 52),
+                  side: const BorderSide(color: Colors.redAccent),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
