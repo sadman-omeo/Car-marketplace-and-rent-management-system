@@ -11,6 +11,8 @@ import 'book_car_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../services/booking_service.dart';
 
+import '../inquiries/contact_seller_screen.dart';
+
 class CarDetailsScreen extends StatelessWidget {
   final String carId;
   final Map<String, dynamic> car;
@@ -308,6 +310,23 @@ class CarDetailsScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(height: 12),
+              if (!isOwner)
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ContactSellerScreen(
+                          carId: carId,
+                          car: car,
+                        ),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.message),
+                  label: const Text('Contact Seller'),
+                ),
               const SizedBox(height: 12),
               if (isForRent && !isOwner)
                 ElevatedButton.icon(

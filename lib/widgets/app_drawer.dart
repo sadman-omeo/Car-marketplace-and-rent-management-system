@@ -11,6 +11,9 @@ import '../screens/cars/rent_cars_screen.dart';
 
 import '../screens/bookings/my_bookings_screen.dart';
 
+import '../screens/inquiries/my_inquiries_screen.dart';
+import '../screens/inquiries/received_inquiries_screen.dart';
+
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
 
@@ -116,6 +119,32 @@ class AppDrawer extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (_) => const MyBookingsScreen(),
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.outgoing_mail, color: Color(0xFFD4AF37)),
+              title: const Text('My Inquiries'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const MyInquiriesScreen(),
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.inbox, color: Color(0xFFD4AF37)),
+              title: const Text('Received Inquiries'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const ReceivedInquiriesScreen(),
                   ),
                 );
               },
