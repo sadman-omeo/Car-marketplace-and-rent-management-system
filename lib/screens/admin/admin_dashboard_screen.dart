@@ -6,6 +6,8 @@ import 'admin_bookings_screen.dart';
 
 import 'admin_listings_screen.dart';
 
+import 'admin_users_screen.dart';
+
 class AdminDashboardScreen extends StatelessWidget {
   const AdminDashboardScreen({super.key});
 
@@ -105,6 +107,14 @@ class AdminDashboardScreen extends StatelessWidget {
                     context: context,
                     title: 'Manage Users',
                     icon: Icons.people,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const AdminUsersScreen(),
+                        ),
+                      );
+                    },
                   ),
                   _adminCard(
                     context: context,

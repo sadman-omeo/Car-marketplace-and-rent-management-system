@@ -3,8 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../core/constants/app_constants.dart';
 
-
-
 class UserService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -20,6 +18,7 @@ class UserService {
       'email': email,
       'phone': phone,
       'role': 'user',
+      'status': 'active',
       'profileImage': defaultProfileImage,
       'createdAt': Timestamp.now(),
     });
@@ -28,5 +27,18 @@ class UserService {
   Future<DocumentSnapshot<Map<String, dynamic>>> getCurrentUserProfile() async {
     final user = FirebaseAuth.instance.currentUser;
     return await _firestore.collection('users').doc(user!.uid).get();
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllUsersForAdmin() {
+    return _firestore.collection('users').snapshots();
+  }
+
+  Future<void> updateUserStatus({
+    required String userId,
+    required String status,
+  }) async {
+    await _firestore.collection('users').doc(userId).update({
+      'status': status,
+    });
   }
 }

@@ -1,0 +1,68 @@
+============================================================
+           AI USAGE DECLARATION
+============================================================
+
+Name: SADMAN AHMED OMEO
+Student ID: 22201333
+Assignment: Final Project Submission
+Date: 01/05/2026
+
+------------------------------------------------------------
+1. AI TOOLS USED (check all that apply)
+------------------------------------------------------------
+[ ] None
+[Y] ChatGPT
+[ ] GitHub Copilot
+[ ] Google Gemini
+[ ] Claude
+[ ] Cursor
+[ ] Other: ________________
+
+------------------------------------------------------------
+2. PURPOSE OF AI USE (check all that apply)
+------------------------------------------------------------
+[Y] Learning/understanding concepts
+[Y] Debugging my code
+[ ] Generating code snippets
+[ ] Writing text content
+[Y] Design/styling ideas
+[ ] Image generation
+[ ] Other: ________________
+
+------------------------------------------------------------
+3. DESCRIPTION OF AI USE
+------------------------------------------------------------
+Briefly describe what you used AI for and how:
+
+I used ChatGPT mainly as a learning and development support tool during my final project. 
+It helped me understand Flutter and Firebase concepts, debug errors, improve app structure to generate different features such as authentication, dashboard design, car registration, booking flow, reporting system, inquiry system, and admin management features etc. 
+I also used it for UI and styling ideas. All generated suggestions were reviewed, tested, 
+and modified by me before being included in the final submission.
+
+
+------------------------------------------------------------
+4. AI-ASSISTED SECTIONS
+------------------------------------------------------------
+List specific files/sections where AI helped significantly:
+
+File: lib/screens/cars/register_car_screen.dart Section: Car registration form, gallery image selection, image handling
+
+File: lib/services/booking_service.dart Section: Booking creation, overlap checking, booking status update
+
+File: _________________ Section: _________________
+
+------------------------------------------------------------
+5. DECLARATION
+------------------------------------------------------------
+I declare that:
+- This disclosure is complete and accurate
+- I understand all code in my submission
+- I can explain and modify my work if asked
+- I take full responsibility for my submission
+
+Signature: ____OMEO_______________
+Date: _________01/05/2026________
+
+============================================================
+Save as: docs/AI_Declaration.txt
+============================================================

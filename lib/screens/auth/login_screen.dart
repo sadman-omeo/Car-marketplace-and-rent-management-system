@@ -7,6 +7,8 @@ import '../admin/admin_dashboard_screen.dart';
 import 'signup_screen.dart';
 import '../user/user_dashboard_screen.dart';
 
+import '../../services/user_service.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -18,6 +20,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final UserService _userService = UserService();
 
   final AuthService _authService = AuthService();
 
@@ -65,6 +68,22 @@ class _LoginScreenState extends State<LoginScreen> {
         email: emailOrUsername,
         password: password,
       );
+
+      final profileDoc = await _userService.getCurrentUserProfile();
+      final userData = profileDoc.data() ?? {};
+      final status = (userData['status'] ?? 'active').toString().toLowerCase();
+
+      if (status == 'blocked') {
+        await _authService.signOut();
+
+        if (!mounted) return;
+        _showMessage('Your account has been blocked by admin');
+
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
 
       if (!mounted) return;
 
