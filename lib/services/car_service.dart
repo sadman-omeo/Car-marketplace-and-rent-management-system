@@ -110,4 +110,24 @@ class CarService {
       'updatedAt': Timestamp.now(),
     });
   }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllRegisteredCarsForAdmin() {
+    return _firestore.collection('registered_cars').snapshots();
+  }
+
+  Future<void> adminRemoveFromSale(String carId) async {
+    await _firestore.collection('registered_cars').doc(carId).update({
+      'isForSale': false,
+      'salePrice': '',
+      'updatedAt': Timestamp.now(),
+    });
+  }
+
+  Future<void> adminRemoveFromRent(String carId) async {
+    await _firestore.collection('registered_cars').doc(carId).update({
+      'isForRent': false,
+      'rentPricePerDay': '',
+      'updatedAt': Timestamp.now(),
+    });
+  }
 }

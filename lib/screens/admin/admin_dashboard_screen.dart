@@ -4,6 +4,8 @@ import 'admin_reports_screen.dart';
 
 import 'admin_bookings_screen.dart';
 
+import 'admin_listings_screen.dart';
+
 class AdminDashboardScreen extends StatelessWidget {
   const AdminDashboardScreen({super.key});
 
@@ -106,6 +108,19 @@ class AdminDashboardScreen extends StatelessWidget {
                   ),
                   _adminCard(
                     context: context,
+                    title: 'Manage Listings',
+                    icon: Icons.directions_car,
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const AdminListingsScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  _adminCard(
+                    context: context,
                     title: 'Manage Bookings',
                     icon: Icons.book_online,
                     onTap: () {
@@ -116,11 +131,6 @@ class AdminDashboardScreen extends StatelessWidget {
                         ),
                       );
                     },
-                  ),
-                  _adminCard(
-                    context: context,
-                    title: 'Manage Bookings',
-                    icon: Icons.book_online,
                   ),
                   _adminCard(
                     context: context,
